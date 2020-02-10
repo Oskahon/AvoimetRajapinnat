@@ -71,6 +71,9 @@ let query = {
 	query: `{
 		bikeRentalStations {
 			name
+			bikesAvailable
+			lat
+			lon
 		}
 	}`
 };
@@ -81,9 +84,10 @@ xmlr.setRequestHeader('Content-Type', 'application/json');
 xmlr.onreadystatechange = function () {
 	if (xmlr.readyState === 4 && xmlr.status === 200) {
 		let arr = xmlr.response;
-		for (let i of arr.data.bikeRentalStations){
-			document.getElementById('testi').innerText += i.name;
-		}
+		
+		document.getElementById('testi').innerText += "\n"+arr.data.bikeRentalStations[0].name 
+		+ ", vapaita pyöriä: "+ arr.data.bikeRentalStations[0].bikesAvailable;
+		
 	}
 };
 
