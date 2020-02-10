@@ -3,5 +3,17 @@ body {
 }
 
 h1 {
-    background-color: aqua;
+    margin:auto;
+    text-align: center;
+}
+
+table {
+    margin:auto;
+    border-collapse: collapse;
+    text-align:center;
+}
+
+td, th {
+    border-style: solid;
+    padding: 1ex;
 }

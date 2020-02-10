@@ -85,9 +85,15 @@ xmlr.onreadystatechange = function () {
 	if (xmlr.readyState === 4 && xmlr.status === 200) {
 		let arr = xmlr.response;
 		
-		document.getElementById('testi').innerText += "\n"+arr.data.bikeRentalStations[0].name 
-		+ ", vapaita pyöriä: "+ arr.data.bikeRentalStations[0].bikesAvailable;
-		
+		let taulu = document.getElementById("taulu");
+		for (let i of arr.data.bikeRentalStations){
+			let rivi = taulu.insertRow();
+			let nimi = rivi.insertCell();
+			nimi.innerText = i.name;
+			let vapaatPyorat = rivi.insertCell();
+			vapaatPyorat.innerText = i.bikesAvailable;
+			taulu.appendChild(rivi);
+		}
 	}
 };
 
