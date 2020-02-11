@@ -68,7 +68,7 @@ request(req, function (error, response, body) {
 let xmlr = new XMLHttpRequest();
 let url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
 let query = {
-	query: `{
+    query: `{
 		bikeRentalStations {
 			name
 			bikesAvailable
@@ -82,13 +82,13 @@ xmlr.responseType = "json";
 xmlr.open('POST', url, true);
 xmlr.setRequestHeader('Content-Type', 'application/json');
 xmlr.onreadystatechange = function () {
-	if (xmlr.readyState === 4 && xmlr.status === 200) {
-		let arr = xmlr.response;
+    if (xmlr.readyState === 4 && xmlr.status === 200) {
+        let arr = xmlr.response;
 		
-		document.getElementById('testi').innerText += "\n"+arr.data.bikeRentalStations[0].name 
+        document.getElementById('testi').innerText += "\n"+arr.data.bikeRentalStations[0].name 
 		+ ", vapaita pyöriä: "+ arr.data.bikeRentalStations[0].bikesAvailable;
 		
-	}
+    }
 };
 
 xmlr.send(JSON.stringify(query));
