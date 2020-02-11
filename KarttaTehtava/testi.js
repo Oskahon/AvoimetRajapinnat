@@ -22,12 +22,15 @@ xmlr.onreadystatechange = function () {
 		for (let i of arr.data.bikeRentalStations){
 			let rivi = taulu.insertRow();
 			let nimi = rivi.insertCell();
-			nimi.innerText = i.name;
 			let vapaatPyorat = rivi.insertCell();
+			nimi.innerText = i.name;
 			vapaatPyorat.innerText = i.bikesAvailable;
+
 			taulu.appendChild(rivi);
 		}
 	}
 };
 
 xmlr.send(JSON.stringify(query));
+
+
