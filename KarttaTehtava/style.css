@@ -7,6 +7,14 @@ h1 {
     text-align: center;
 }
 
+#map{
+    margin-left: 10%;
+}
+
+#asemat {
+    margin-left: 10%;
+}
+
 table {
     margin:auto;
     border-collapse: collapse;
@@ -16,4 +24,14 @@ table {
 td, th {
     border-style: solid;
     padding: 1ex;
+}
+
+#test {
+    text-align: center;
+    margin: 0px;
+}
+
+h2 {
+    text-align: center;
+    margin: 0px;
 }
