@@ -10,6 +10,10 @@
     <body>
 
         <h1>Kaupunkipyörät!</h1>
+        <select name="lista" id="asemat" onchange="testi(this);">
+            <option value="eka">Eka</option>
+            <option value="toka">toka</option>
+        </select>
         
         <div id="map" style="width: 100%; height: 400px;"></div>
 
@@ -40,6 +44,13 @@
 
             import { getPyoraData } from './exportesti.mjs';
             getPyoraData(makeMap);
+
+            window.onload=function() {
+                    let filter = document.getElementById('asemat');
+                    filter.onchange=function() {
+                        console.log(this.options[this.selectedIndex].text);
+                } 
+            }
         </script>    
     
     </body>
