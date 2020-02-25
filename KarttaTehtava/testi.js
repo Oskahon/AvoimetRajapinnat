@@ -17,9 +17,9 @@ xmlr.setRequestHeader('Content-Type', 'application/json');
 xmlr.onreadystatechange = function () {
     if (xmlr.readyState === 4 && xmlr.status === 200) {
         let arr = xmlr.response;
-		
+
         let taulu = document.getElementById("tiedot");
-        for (let i of arr.data.bikeRentalStations){
+        for (let i of arr.data.bikeRentalStations) {
             let rivi = taulu.insertRow();
             let nimi = rivi.insertCell();
             let vapaatPyorat = rivi.insertCell();
@@ -32,5 +32,3 @@ xmlr.onreadystatechange = function () {
 };
 
 xmlr.send(JSON.stringify(query));
-
-

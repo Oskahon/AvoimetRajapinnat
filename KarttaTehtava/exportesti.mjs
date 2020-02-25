@@ -1,8 +1,4 @@
-export function test(){
-    return "asd";
-}
-
-export function getPyoraData(func){
+export function getPyoraData(func) {
     let xmlr = new XMLHttpRequest();
     let url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
     let query = {
@@ -22,7 +18,7 @@ export function getPyoraData(func){
     xmlr.onreadystatechange = function () {
         if (xmlr.readyState === 4 && xmlr.status === 200) {
             var arr = xmlr.response;
-			
+
             // let taulu = document.getElementById("tiedot");
             // for (let i of arr.data.bikeRentalStations){
             // 	let rivi = taulu.insertRow();
@@ -36,7 +32,7 @@ export function getPyoraData(func){
 
             let lista = document.getElementById("asemat");
 
-            for (let i of arr.data.bikeRentalStations){
+            for (let i of arr.data.bikeRentalStations) {
                 let tietue = document.createElement("option");
                 tietue.innerText = i.name;
                 tietue.value = i.stationId;
@@ -45,13 +41,13 @@ export function getPyoraData(func){
 
             func(60.1719, 24.9414, null, null);
         }
-		
+
     };
     xmlr.send(JSON.stringify(query));
 
 }
 
-export function getStationData(Id, func){
+export function getStationData(Id, func) {
     let xmlr = new XMLHttpRequest();
     let url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql';
     let query = {
@@ -73,10 +69,10 @@ export function getStationData(Id, func){
         if (xmlr.readyState === 4 && xmlr.status === 200) {
             var arr = xmlr.response;
             var asema = arr.data.bikeRentalStation;
-            console.log(asema.name+", "+asema.bikesAvailable);
+            console.log(asema.name + ", " + asema.bikesAvailable);
             func(asema.lat, asema.lon, asema.name, asema.bikesAvailable);
         }
-		
+
     };
     xmlr.send(JSON.stringify(query));
 }
