@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Pyörä Kartta</title>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"/>
-        <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
-    </head>
-    <body>
 
-        <h1>Kaupunkipyörät!</h1>
-        <select name="lista" id="asemat" onchange="testi(this);">
-            <option value="empty"></option>
-        </select>
-        
-        <div id="map" style="width: 80%; height: 60em;"></div>
+<head>
+    <meta charset="utf-8">
+    <title>Pyörä Kartta</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+</head>
 
-        <!-- <table id="taulu">
+<body>
+
+    <h1>Kaupunkipyörät!</h1>
+    <select name="lista" id="asemat" onchange="testi(this);">
+        <option value="empty"></option>
+    </select>
+
+    <div id="map" style="width: 80%; height: 60em;"></div>
+    <div id="saa">
+        <img id="kuva" src="" alt="Säätila kuva">
+        <p id="lampo"></p>
+    </div>
+
+    <!-- <table id="taulu">
             <thead>
                 <tr>
                     <th>Aseman nimi</th>
@@ -25,18 +31,34 @@
             </thead>
             <tbody id="tiedot"></tbody>
         </table> -->
-        <!-- <script src="testi.js"></script> -->
-        <script type="module">
-            var kartta = L.map('map');
-            var mark = null;
+    <!-- <script src="testi.js"></script> -->
+    <script type="module">
+        let xmlr = new XMLHttpRequest;
+        xmlr.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&appid=a8bef477e3c820e50e9dc96ed9fb716d", true);
+        xmlr.onreadystatechange = function () {
+        if (xmlr.readyState === 4 && xmlr.status === 200) {
+            let response = JSON.parse(xmlr.responseText);
+            document.getElementById("lampo").innerHTML = response.main.temp+"C";
+            var kuvaurl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+            document.getElementById("kuva").src = kuvaurl;
+            console.log(response.weather[0].icon);
+            console.log(response.main.temp);
+        }};
+        
+        xmlr.send();
+
+
+
+        var kartta = L.map('map');
+            var merkki = null;
   
             function makeMap(x, y, name, available){
                 kartta.setView([x, y], 16);
                 if (name !== null){
-                    if (mark !== null){
-                        kartta.removeLayer(mark);
+                    if (merkki !== null){
+                        kartta.removeLayer(merkki);
                     }
-                    mark = L.marker([x, y]).addTo(kartta)
+                    merkki = L.marker([x, y]).addTo(kartta)
                       .bindPopup("<h2>"+name+"</h2><p id='test'>Bikes available:</br>"
                         +available+"</p>").openPopup();
                 } 
@@ -51,14 +73,15 @@
             getPyoraData(makeMap);
 
             window.onload=function() {
-                    let drowDown = document.getElementById('asemat');
-                    drowDown.onchange=function() {
-                        if (this.selectedIndex !== 0){
+                let drowDown = document.getElementById('asemat');
+                drowDown.onchange=function() {
+                    if (this.selectedIndex !== 0){
                         getStationData(this.options[this.selectedIndex].value, makeMap);
-                        }
+                    }
                 } 
             }
-        </script>    
-    
-    </body>
+        </script>
+
+</body>
+
 </html>
