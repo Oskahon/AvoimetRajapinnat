@@ -11,13 +11,12 @@
 
         <h1>Kaupunkipyörät!</h1>
         <select name="lista" id="asemat" onchange="testi(this);">
-            <option value="eka">Eka</option>
-            <option value="toka">toka</option>
+            <option value="empty"></option>
         </select>
         
-        <div id="map" style="width: 100%; height: 400px;"></div>
+        <div id="map" style="width: 80%; height: 60em;"></div>
 
-        <table id="taulu">
+        <!-- <table id="taulu">
             <thead>
                 <tr>
                     <th>Aseman nimi</th>
@@ -25,30 +24,38 @@
                 </tr>
             </thead>
             <tbody id="tiedot"></tbody>
-        </table>
+        </table> -->
         <!-- <script src="testi.js"></script> -->
         <script type="module">
-            // const long=60.173057;
-            // const lat=24.925232;
             var kartta = L.map('map');
-            function makeMap(x, y){
-            kartta.setView([x, y], 16);
+            var mark = null;
+  
+            function makeMap(x, y, name, available){
+                kartta.setView([x, y], 16);
+                if (name !== null){
+                    if (mark !== null){
+                        kartta.removeLayer(mark);
+                    }
+                    mark = L.marker([x, y]).addTo(kartta)
+                      .bindPopup("<h2>"+name+"</h2><p id='test'>Bikes available:</br>"
+                        +available+"</p>").openPopup();
+                } 
             }
             
-            // makeMap(long,lat);
-
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: `&copy:
              <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
              contributors`
              }).addTo(kartta);
 
-            import { getPyoraData } from './exportesti.mjs';
+            import { getPyoraData, getStationData } from './exportesti.mjs';
             getPyoraData(makeMap);
 
             window.onload=function() {
-                    let filter = document.getElementById('asemat');
-                    filter.onchange=function() {
-                        console.log(this.options[this.selectedIndex].text);
+                    let drowDown = document.getElementById('asemat');
+                    drowDown.onchange=function() {
+                        if (this.selectedIndex !== 0){
+                        getStationData(this.options[this.selectedIndex].value, makeMap);
+                        }
                 } 
             }
         </script>    
