@@ -17,6 +17,10 @@
     </select>
 
     <div id="map" style="width: 80%; height: 60em;"></div>
+    <div id="saa">
+        <img id="kuva" src="" alt="Säätila kuva">
+        <p id="lampo"></p>
+    </div>
 
     <!-- <table id="taulu">
             <thead>
@@ -29,6 +33,22 @@
         </table> -->
     <!-- <script src="testi.js"></script> -->
     <script type="module">
+        let xmlr = new XMLHttpRequest;
+        xmlr.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&appid=a8bef477e3c820e50e9dc96ed9fb716d", true);
+        xmlr.onreadystatechange = function () {
+        if (xmlr.readyState === 4 && xmlr.status === 200) {
+            let response = JSON.parse(xmlr.responseText);
+            document.getElementById("lampo").innerHTML = response.main.temp+"C";
+            var kuvaurl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+            document.getElementById("kuva").src = kuvaurl;
+            console.log(response.weather[0].icon);
+            console.log(response.main.temp);
+        }};
+        
+        xmlr.send();
+
+
+
         var kartta = L.map('map');
             var merkki = null;
   
