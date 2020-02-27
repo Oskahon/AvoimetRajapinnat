@@ -103,16 +103,23 @@
             } 
             document.getElementById("coord").addEventListener("click", function(){
                 console.log(document.getElementById("lat").innerHTML+", "+document.getElementById("lng").innerHTML);
-            });
-        }
-
-        L.Routing.control({
+                L.Routing.control({
             waypoints: [
-            L.latLng(60.186398, 24.946222),
+            L.latLng(document.getElementById("lat").innerHTML, document.getElementById("lng").innerHTML),
             L.latLng(60.193357, 24.954824)
             ],
             routeWhileDragging: true
             }).addTo(kartta);
+            });
+        }
+
+        // L.Routing.control({
+        //     waypoints: [
+        //     L.latLng(document.getElementById("lat").innerHTML, document.getElementById("lng").innerHTML),
+        //     L.latLng(60.193357, 24.954824)
+        //     ],
+        //     routeWhileDragging: true
+        //     }).addTo(kartta);
 
             // window.onload=function(){
             //     document.getElementById("coord").addEventListener("click", function(){
