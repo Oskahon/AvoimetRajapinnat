@@ -15,7 +15,10 @@
     
 
     <h1>Kaupunkipyörät!</h1>
-    <select name="lista" id="asemat" onchange="testi(this);">
+    <button id="coord">nappi</button>
+    <p id="lat">asd</p>
+    <p id="lng">dsa</p>
+    <select name="lista" id="asemat">
         <option value="empty"></option>
     </select>
 
@@ -38,6 +41,7 @@
     <script type="module">
         let xmlr = new XMLHttpRequest;
         xmlr.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&appid=a8bef477e3c820e50e9dc96ed9fb716d", true);
+        
         xmlr.onreadystatechange = function () {
         if (xmlr.readyState === 4 && xmlr.status === 200) {
             let response = JSON.parse(xmlr.responseText);
@@ -51,44 +55,70 @@
         xmlr.send();
 
         var kartta = L.map('map');
-            var merkki = null;
+        var merkki = null;
+        var juttu = "ase";
   
-            function makeMap(x, y, name, available){
-                kartta.setView([x, y], 16);
-                if (name !== null){
-                    if (merkki !== null){
-                        kartta.removeLayer(merkki);
-                    }
-                    merkki = L.marker([x, y]).addTo(kartta)
-                      .bindPopup("<h2>"+name+"</h2><p id='test'>Bikes available:</br>"
-                        +available+"</p>").openPopup();
-                } 
+        function makeMap(x, y, name, available){
+            kartta.setView([x, y], 16);
+            if (name !== null){
+                if (merkki !== null){
+                    kartta.removeLayer(merkki);
+                }
+                merkki = L.marker([x, y]).addTo(kartta)
+                    .bindPopup("<h2>"+name+"</h2><p id='test'>Bikes available:</br>"
+                    +available+"</p>").openPopup();
+            } 
+            if (merkki!==null){
+                document.getElementById("lat").innerHTML = merkki.getLatLng().lat;
+                document.getElementById("lng").innerHTML = merkki.getLatLng().lng;
             }
+            // console.log(merkki.getLatLng().lng);
+        }
             
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: `&copy:
-             <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
-             contributors`
-             }).addTo(kartta);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: `&copy:
+            <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
+            contributors`
+            }).addTo(kartta);
 
-            import { getPyoraData, getStationData } from './exportesti.mjs';
-            getPyoraData(makeMap);
+        import { getPyoraData, getStationData } from './exportesti.mjs';
+        getPyoraData(makeMap);
 
-            window.onload=function() {
-                let drowDown = document.getElementById('asemat');
-                drowDown.onchange=function() {
-                    if (this.selectedIndex !== 0){
-                        getStationData(this.options[this.selectedIndex].value, makeMap);
-                    }
-                } 
-            }
+            // window.onload=function() {
+            //     let drowDown = document.getElementById('asemat');
+            //     drowDown.onchange=function() {
+            //         if (this.selectedIndex !== 0){
+            //             getStationData(this.options[this.selectedIndex].value, makeMap);
+            //         }
+            //     } 
+            // }
 
-            L.Routing.control({
+          
+
+        window.onload=function() {
+            let drowDown = document.getElementById('asemat');
+            drowDown.onchange=function() {
+                if (this.selectedIndex !== 0){
+                    getStationData(this.options[this.selectedIndex].value, makeMap);
+                }
+            } 
+            document.getElementById("coord").addEventListener("click", function(){
+                console.log(document.getElementById("lat").innerHTML+", "+document.getElementById("lng").innerHTML);
+            });
+        }
+
+        L.Routing.control({
             waypoints: [
             L.latLng(60.186398, 24.946222),
             L.latLng(60.193357, 24.954824)
             ],
             routeWhileDragging: true
             }).addTo(kartta);
+
+            // window.onload=function(){
+            //     document.getElementById("coord").addEventListener("click", function(){
+            //         console.log(document.getElementById("piilo").innerHTML);
+            //     });
+            // }
         </script>
 
 </body>
