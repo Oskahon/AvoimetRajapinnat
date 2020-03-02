@@ -11,7 +11,6 @@ export function getPyoraData(func) {
 		}
 	}`
     };
-
     xmlr.responseType = "json";
     xmlr.open('POST', url, true);
     xmlr.setRequestHeader('Content-Type', 'application/json');

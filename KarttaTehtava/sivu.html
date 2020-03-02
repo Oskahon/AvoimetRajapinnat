@@ -6,10 +6,13 @@
     <title>Pyörä Kartta</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+    <script src="../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 </head>
 
 <body>
+    
 
     <h1>Kaupunkipyörät!</h1>
     <button id="coord">nappi</button>
@@ -19,13 +22,13 @@
         <option value="empty"></option>
     </select>
 
-    <div id="map" style="width: 80%; height: 60em;"></div>
+    <div id="map" style="width: 80%; height: 50em;"></div>
     <div id="saa">
         <img id="kuva" src="" alt="Säätila kuva">
         <p id="lampo"></p>
     </div>
 
-    <!-- <table id="taulu">
+    <table id="taulu">
             <thead>
                 <tr>
                     <th>Aseman nimi</th>
@@ -34,7 +37,7 @@
             </thead>
             <tbody id="tiedot"></tbody>
         </table> -->
-    <!-- <script src="testi.js"></script> -->
+    <script src="testi.js"></script>
     <script type="module">
         let xmlr = new XMLHttpRequest;
         xmlr.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&appid=a8bef477e3c820e50e9dc96ed9fb716d", true);
@@ -80,6 +83,17 @@
         import { getPyoraData, getStationData } from './exportesti.mjs';
         getPyoraData(makeMap);
 
+            // window.onload=function() {
+            //     let drowDown = document.getElementById('asemat');
+            //     drowDown.onchange=function() {
+            //         if (this.selectedIndex !== 0){
+            //             getStationData(this.options[this.selectedIndex].value, makeMap);
+            //         }
+            //     } 
+            // }
+
+          
+
         window.onload=function() {
             let drowDown = document.getElementById('asemat');
             drowDown.onchange=function() {
@@ -89,8 +103,23 @@
             } 
             document.getElementById("coord").addEventListener("click", function(){
                 console.log(document.getElementById("lat").innerHTML+", "+document.getElementById("lng").innerHTML);
+                L.Routing.control({
+            waypoints: [
+            L.latLng(document.getElementById("lat").innerHTML, document.getElementById("lng").innerHTML),
+            L.latLng(60.193357, 24.954824)
+            ],
+            routeWhileDragging: true
+            }).addTo(kartta);
             });
         }
+
+        // L.Routing.control({
+        //     waypoints: [
+        //     L.latLng(document.getElementById("lat").innerHTML, document.getElementById("lng").innerHTML),
+        //     L.latLng(60.193357, 24.954824)
+        //     ],
+        //     routeWhileDragging: true
+        //     }).addTo(kartta);
 
             // window.onload=function(){
             //     document.getElementById("coord").addEventListener("click", function(){
