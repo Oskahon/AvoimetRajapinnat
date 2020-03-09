@@ -17,59 +17,38 @@ var con = mysql.createConnection({
     database: "example_db"
 });
 
-function getInformationFromDB (callback) {
+// function getInformationFromDB (callback) {
 
-    // eslint-disable-next-line no-unused-vars
-    con.query('SELECT * FROM location', function(err, result, fields)
-    {
-        if (err) return callback(err);
-        callback(null, result);
+//     // eslint-disable-next-line no-unused-vars
+//     con.query('SELECT * FROM location', function(err, result, fields)
+//     {
+//         if (err) return callback(err);
+//         callback(null, result);
+//     });
+// }
+
+// console.log("Call Function");
+// getInformationFromDB(function (err, result) {
+//     if (err) console.log("Database error!");
+//     else {
+//         app.get('/', function (req, res) {
+//             res.send(result);
+//         });
+//     }
+// });
+
+function getData() {
+    return new Promise((resolve, reject) => {
+        // eslint-disable-next-line no-unused-vars
+        con.query('SELECT * FROM location', function(err, result, fields)
+        {
+            if (err) return reject(err);
+            resolve(result);
+        });
     });
 }
 
-console.log("Call Function");
-getInformationFromDB(function (err, result) {
-    if (err) console.log("Database error!");
-    else {
-        app.get('/', function (req, res) {
-            res.send(result);
-        });
-    }
+app.get('/', async function (req, res) {
+    let palaute = await getData();
+    res.send(palaute);
 });
-
-// async function testi(){
-//     try {
-//         const rivi = await con.query('SELECT * FROM location', function(err, result, fields)
-//         {
-//             if (err) throw err;
-//             const palaute = result;
-//             return palaute; 
-//         });
-//         return rivi;
-//     } catch (err){
-//         console.log("kikki");
-//     }
-// }
-
-// testi().then((x) => function(){
-//     app.get('/', function (req, res) {
-//         res.send(x);
-//     });
-// });
-
-// function asyncAwait() {
-//     let testi = "ase";
-//     testi = con.query('SELECT * FROM location', async function(err, result, fields)
-//     {
-//         if (err) throw err;
-//         const palaute = await result;
-//         return palaute; 
-//     });
-//     return testi;
-// }
-// console.log(testi());
-
-// app.get('/', function (req, res) {
-//     res.send(asyncAwait());
-// });
-// asyncAwait();
